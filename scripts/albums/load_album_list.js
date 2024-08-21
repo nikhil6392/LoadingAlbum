@@ -3,7 +3,7 @@ var http=require('http');
 var fs=require('fs');
 
 function load_album_list(){
-    fs.readdir("album",(err,files)=>{
+    fs.readdir("albums",(err,files)=>{
         if(err){
             
             return err;
@@ -15,13 +15,13 @@ function load_album_list(){
 function handle_incoming_request(req,res){
     console.log("INCOMING REQUEST"+req.method+" "+req.url);
 
-    load_album_list((err,album)=>{
+    load_album_list((err,albums)=>{
         if(err){
             res.writeHead(500,{"Content-Type":"application/json"});
             res.end(JSON.stringify(err)+"\n");
         }
 
-        var out ={error:null,data:{album:album}};
+        var out ={error:null,data:{albums:albums}};
         res.writeHead(200,{"Content-Type":"application/json"});
         res.end(JSON.stringify(out)+"\n");
     });
